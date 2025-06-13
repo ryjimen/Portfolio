@@ -8,7 +8,6 @@ function Portfolio() {
       <main className="w-full h-full  md:px-20 max-w-screen-xl mx-auto">
         <div>
           <Hero />
-          <Hero/>
         </div>
       </main>
     </div>
