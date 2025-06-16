@@ -12,7 +12,7 @@ function Hero() {
         </div>
       </div>
 
-      <div className="ml-5px max-w-4xl mx-auto z-10 space-y-3">
+      <div className="ml-5px max-w-4xl mx-auto z-10 space-y-3 bg-[#242424] px-5 pb-3">
         {/* Name */}
         <h1 className="text-3xl sm:text-4xl font-extrabold ">
           <span className="text-gradient">Rylan Jimenez</span>

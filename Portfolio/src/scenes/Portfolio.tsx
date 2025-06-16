@@ -1,15 +1,15 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import About from "../components/About";
+import Projects from "../components/Projects";
 
 function Portfolio() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col striped-background">
       <Navbar />
       <main className="w-full h-full  md:px-20 max-w-screen-xl mx-auto">
         <div>
           <Hero/>
-          <About />
+          <Projects/>
         </div>
       </main>
     </div>

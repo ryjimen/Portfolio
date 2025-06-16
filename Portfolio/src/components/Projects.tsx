@@ -25,10 +25,10 @@ const projects: Project[] = [
   },
 ];
 
-function About() {
+function Projects() {
   return (
     <section
-      id="about"
+      id="projects"
       className="relative min-h-screen flex flex-col items-center justify-center px-3 text-left "
     >
       <h2 className="text-4xl font-bold text-center text-white mb-10">
@@ -42,6 +42,7 @@ function About() {
                 src={project.imageUrl}
                 alt={project.title}
                 className="w-full max-h-[200px] object-cover"
+                
               />
             </figure>
             <div className="card-body">
@@ -74,4 +75,4 @@ function About() {
   );
 }
 
-export default About;
+export default Projects;
