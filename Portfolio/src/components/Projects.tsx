@@ -20,7 +20,25 @@ const projects: Project[] = [
       "OpenGL",
     ],
     githubUrl: "https://github.com/ryjimen/Cooperative_A-Star_Pathfinding",
-    imageUrl: "../../public/pathfinding.png",
+    imageUrl: "/pathfinding.png",
+    status: "completed",
+  },
+  {
+    title: "ApexTracker",
+    description:
+      "A tracker for Apex Legends player stats, enabling users to keep track of their friend's live data.",
+    technologies: ["TypeScript", "CSS", "Python", "React", "Bootstrap"],
+    githubUrl: "https://github.com/ryjimen/ApexTracker",
+    imageUrl: "/ALTracker1.PNG",
+    status: "in-progress",
+  },
+  {
+    title: "Simple‑OCR",
+    description:
+      "A straightforward OCR tool built with Python and OpenCV/Tesseract that extracts text from images or PDFs using a Flask web interface.",
+    technologies: ["Python", "Flask", "OpenCV", "Tesseract‑OCR"],
+    githubUrl: "https://github.com/ryjimen/Simple-OCR",
+    imageUrl: "/OCR.PNG",
     status: "completed",
   },
 ];
@@ -41,8 +59,7 @@ function Projects() {
               <img
                 src={project.imageUrl}
                 alt={project.title}
-                className="w-full max-h-[200px] object-cover"
-                
+                className="w-full h-[200px] object-cover"
               />
             </figure>
             <div className="card-body">

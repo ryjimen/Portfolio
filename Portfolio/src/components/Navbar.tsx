@@ -24,9 +24,7 @@ function Navbar() {
   return (
     <nav
       className={`flex fixed w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-zinc-900 backdrop-blur-sm shadow-lg"
-          : "bg-transparent"
+        isScrolled ? "bg-zinc-900 backdrop-blur-sm shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="mx-10 w-full my-4">
@@ -42,7 +40,11 @@ function Navbar() {
 
           <div className="hidden md:flex space-x-8">
             {navItems.map((item, key) => (
-              <a key={key} href={item.href} className="text-foreground/80 hover:text-emerald-400 transition-colors duration-300">
+              <a
+                key={key}
+                href={item.href}
+                className="text-foreground/80 hover:text-emerald-400 transition-colors duration-300"
+              >
                 {item.name}
               </a>
             ))}
