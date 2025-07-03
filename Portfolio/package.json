@@ -13,8 +13,10 @@
     "@tailwindcss/vite": "^4.1.10",
     "lucide-react": "^0.514.0",
     "next": "^15.3.3",
+    "p5": "^2.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-p5": "^1.4.1",
     "react-router-dom": "^7.6.2",
     "tailwindcss": "^4.1.10"
   },
