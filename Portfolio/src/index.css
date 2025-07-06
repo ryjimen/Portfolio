@@ -71,6 +71,11 @@ body,
   z-index: -1;
 }
 
+.vertical-slider {
+  transform: rotate(-90deg);
+  transform-origin: left bottom;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;

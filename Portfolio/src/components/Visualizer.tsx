@@ -1,50 +1,53 @@
-import React, { useRef, useEffect } from 'react';
-import p5 from 'p5';
+import { useRef, useEffect, useState } from "react";
+import { Pause, Play } from "lucide-react";
 
-const Visualizer: React.FC = () => {
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const p5Instance = useRef<p5 | null>(null);
-  const isInitialized = useRef(false);
+function Visualizer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const audioElem = useRef<HTMLAudioElement | null>(null);
 
-  var song;
+  const playPause = () => {
+    setIsPlaying((prev) => !prev);
+  };
+
   useEffect(() => {
-    // Prevent double initialization in Strict Mode
-    if (isInitialized.current) return;
-    
-    const sketch = (p: p5) => {
-
-      p.setup = () => {
-        p.createCanvas(600, 400, p.WEBGL);
-      };
-
-      p.draw = () => {
-        p.background(250);
-        p.normalMaterial();
-        p.push();
-        p.rotateZ(p.frameCount * 0.01);
-        p.rotateX(p.frameCount * 0.01);
-        p.rotateY(p.frameCount * 0.01);
-        p.plane(100);
-        p.pop();
-      };
-    };
-
-    if (canvasRef.current) {
-      p5Instance.current = new p5(sketch, canvasRef.current);
-      isInitialized.current = true;
-    }
-
-    // Cleanup function
-    return () => {
-      if (p5Instance.current) {
-        p5Instance.current.remove();
-        p5Instance.current = null;
-        isInitialized.current = false;
+    if (audioElem.current) {
+      if (isPlaying) {
+        audioElem.current.play();
+      } else {
+        audioElem.current.pause();
       }
-    };
-  }, []); // Empty dependency array
+    }
+  }, [isPlaying]);
 
-  return <div ref={canvasRef}/>;
-};
+  useEffect(() => {
+    if (audioElem.current) {
+      audioElem.current.volume =  volume
+    }
+  }, [volume])
+
+  return (
+    <div>
+      <audio src="/audio/AsianRock-Crmnl[@va1encia].mp3" ref={audioElem} />
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value={volume}
+        onChange={(e) => 
+          setVolume(Number(e.target.value))
+        }
+        className="vertical-slider w-full h-1 mb-6 bg-gray-200 rounded-lg appearance-none cursor-pointer range-sm dark:bg-gray-700"
+      ></input>
+      <button
+        className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
+        onClick={playPause}
+      >
+        {isPlaying ? <Pause /> : <Play />}
+      </button>
+    </div>
+  );
+}
 
 export default Visualizer;
