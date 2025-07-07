@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 
 const folderPath = 'public/audio/'
-const outputPath = 'public/fileNameList.json' 
+const outputPath = 'public/audioManifest.json' 
 
 function scanFolder(folder) {
   return fs.readdirSync(folder).map(file => ({

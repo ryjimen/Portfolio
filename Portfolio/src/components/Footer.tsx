@@ -5,11 +5,7 @@ function Footer() {
     <footer className="relative w-full text-base-content p-2 bg-zinc-900 flex items-center h-20">
       {/* Left image */}
       <div className="flex items-center ml-2">
-        <img
-          src="/logo.png"
-          alt="logo"
-          className="max-h-12 mt-2"
-        />
+        <img src="/logo.png" alt="logo" className="max-h-12 mt-2" />
       </div>
 
       <nav className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center text-center">
