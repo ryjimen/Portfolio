@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
+import { Pause, Play, SkipBack, SkipForward, Volume } from "lucide-react";
 
 function timeout(delay: number) {
   return new Promise((res) => setTimeout(res, delay));
@@ -88,6 +88,7 @@ function Visualizer() {
 
   return (
     <div className="w-full flex flex-col items-center">
+      <audio src={getCurrentSong()} ref={audioElem} onTimeUpdate={onPlaying} />
       <div className="w-full">
         <input
           type="range"
@@ -104,11 +105,7 @@ function Visualizer() {
         ></input>
       </div>
       <div className="w-full flex flex-row items-center">
-        <audio
-          src={getCurrentSong()}
-          ref={audioElem}
-          onTimeUpdate={onPlaying}
-        />
+        <Volume/>
         <div className="px-5">
           <input
             type="range"
@@ -122,6 +119,7 @@ function Visualizer() {
           h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none cursor-pointer range-sm dark:bg-emerald-300"
           ></input>
         </div>
+
         <div className="absolute left-1/2 -translate-x-1/2">
           <button
             className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
