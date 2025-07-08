@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { Pause, Play, SkipBack, SkipForward, Volume } from "lucide-react";
+import { Pause, Play, SkipBack, SkipForward, Volume, Volume1, Volume2 } from "lucide-react";
 
 function timeout(delay: number) {
   return new Promise((res) => setTimeout(res, delay));
@@ -105,7 +105,13 @@ function Visualizer() {
         ></input>
       </div>
       <div className="w-full flex flex-row items-center">
-        <Volume/>
+        {volume == 0 ? (
+          <Volume/>
+        ) : volume > 0 && volume < 0.5 ? (
+          <Volume1/>
+        ) : (
+          <Volume2/>
+        )}
         <div className="px-5">
           <input
             type="range"
