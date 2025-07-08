@@ -71,6 +71,15 @@ body,
   z-index: -1;
 }
 
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 9999px;
+  background: #34d399; /* emerald-400 */
+  cursor: pointer;
+}
+
 .vertical-slider {
   transform: rotate(-90deg);
   transform-origin: left bottom;

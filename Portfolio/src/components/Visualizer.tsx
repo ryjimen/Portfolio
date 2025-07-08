@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
 
 function timeout(delay: number) {
@@ -10,6 +10,9 @@ function Visualizer() {
   const [volume, setVolume] = useState(0.1);
   const [audioFiles, setAudioFiles] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(1);
+  const [currentLength, setCurrentLength] = useState(0.0)
+  const [position, setPosition] = useState(0.0)
+  
   const audioElem = useRef<HTMLAudioElement | null>(null);
 
   const playPause = () => {
@@ -24,6 +27,12 @@ function Visualizer() {
     } else {
       return "";
     }
+  };
+
+  const onPlaying = () => {
+    const duration = audioElem.current?.duration;
+    const currTime = audioElem.current?.currentTime;
+    console.log(duration, currTime);
   };
 
   //Play Pause
@@ -55,63 +64,80 @@ function Visualizer() {
   }, []);
 
   //Current playing song
-  useEffect(() => {}, []);
-
-  if (!audioFiles) {
-    return <div>Loading</div>;
-  }
+  useEffect(() => {
+    if (audioElem.current) {
+      audioElem.current.load();
+      if (isPlaying) {
+        audioElem.current.play();
+      }
+      
+    }
+  }, [currentAudio]);
 
   return (
-    <div className="w-full flex flex-row items-center">
-      <audio src={getCurrentSong()} ref={audioElem} />
-      <div className="px-5">
+    <div className="w-full flex flex-col items-center">
+      <div className="w-full">
         <input
           type="range"
           min="0"
           max="1"
           step="0.01"
           value={volume}
-          onChange={(e) => setVolume(Number(e.target.value))}
-          className="horizontal-slider w-20 
-          [&::-webkit-slider-thumb]:appearance-none
-          [&::-webkit-slider-thumb]:h-3
-          [&::-webkit-slider-thumb]:w-3
-          [&::-webkit-slider-thumb]:rounded-full
-        [&::-webkit-slider-thumb]:bg-emerald-400 
+          onChange={null}
+          className="horizontal-slider w-full 
+          volume-slider
           h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none cursor-pointer range-sm dark:bg-emerald-300"
         ></input>
       </div>
-      <div className="absolute left-1/2 -translate-x-1/2">
-        <button
-          className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-          onClick={() => {
-            const current = currentAudio;
-            if (current != 0) {
-              setCurrentAudio(current - 1);
-              setIsPlaying(true);
-            }
-          }}
-        >
-          {isPlaying ? <SkipBack /> : <SkipBack />}
-        </button>
-        <button
-          className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-          onClick={playPause}
-        >
-          {isPlaying ? <Pause /> : <Play />}
-        </button>
-        <button
-          className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-          onClick={() => {
-            const current = currentAudio;
-            if (current != audioFiles.length - 1) {
-              setCurrentAudio(current + 1);
-              setIsPlaying(true);
-            }
-          }}
-        >
-          <SkipForward />
-        </button>
+      <div className="w-full flex flex-row items-center">
+        <audio
+          src={getCurrentSong()}
+          ref={audioElem}
+          onTimeUpdate={onPlaying}
+        />
+        <div className="px-5">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            className="horizontal-slider w-20 
+          volume-slider
+          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none cursor-pointer range-sm dark:bg-emerald-300"
+          ></input>
+        </div>
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <button
+            className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
+            onClick={() => {
+              if (currentAudio !== 0) {
+                setCurrentAudio(currentAudio - 1);
+                setIsPlaying(true);
+              }
+            }}
+          >
+            <SkipBack />
+          </button>
+          <button
+            className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
+            onClick={playPause}
+          >
+            {isPlaying ? <Pause /> : <Play />}
+          </button>
+          <button
+            className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
+            onClick={() => {
+              if (currentAudio !== audioFiles.length - 1) {
+                setCurrentAudio(currentAudio + 1);
+                setIsPlaying(true);
+              }
+            }}
+          >
+            <SkipForward />
+          </button>
+        </div>
       </div>
     </div>
   );
