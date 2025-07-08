@@ -1,9 +1,13 @@
 import { useRef, useEffect, useState } from "react";
-import { Pause, Play, SkipBack, SkipForward, Volume, Volume1, Volume2 } from "lucide-react";
-
-function timeout(delay: number) {
-  return new Promise((res) => setTimeout(res, delay));
-}
+import {
+  Pause,
+  Play,
+  SkipBack,
+  SkipForward,
+  Volume,
+  Volume1,
+  Volume2,
+} from "lucide-react";
 
 function Visualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,6 +15,8 @@ function Visualizer() {
   const [audioFiles, setAudioFiles] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(1);
   const [currentLength, setCurrentLength] = useState(0.0);
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [seekPosition, setSeekPosition] = useState(0.0);
   const [position, setPosition] = useState(0.0);
 
   const audioElem = useRef<HTMLAudioElement | null>(null);
@@ -25,7 +31,7 @@ function Visualizer() {
     if (song) {
       return `/audio/${song["name"]}`;
     } else {
-      return "";
+      return null;
     }
   };
 
@@ -83,8 +89,18 @@ function Visualizer() {
   }, [currentAudio]);
 
   useEffect(() => {
-    console.log(position);
-  }, [position]);
+    if (!isSeeking) {
+      setPosition(seekPosition);
+      if (audioElem.current) {
+        const duration = audioElem.current?.duration ?? 0;
+        if (Number.isFinite(duration) && duration > 0) {
+          //console.log(seekPosition * duration);
+          audioElem.current.currentTime = seekPosition * duration;
+          setPosition(seekPosition / duration);
+        }
+      }
+    }
+  }, [isSeeking]);
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -97,20 +113,28 @@ function Visualizer() {
           step="0.001"
           value={position}
           onChange={(e) => {
+            setSeekPosition(Number(e.target.value));
             setPosition(Number(e.target.value));
+            setIsSeeking(true);
+          }}
+          onMouseUp={() => {
+            setIsSeeking(false);
+          }}
+          onTouchEnd={() => {
+            setIsSeeking(false);
           }}
           className="horizontal-slider w-full 
           volume-slider
-          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none hover:h-2  transition-all delay-50 duration-100 cursor-pointer range-sm dark:bg-emerald-300"
+          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none hover:h-2 transition-all duration-100 cursor-pointer range-sm dark:bg-emerald-300"
         ></input>
       </div>
       <div className="w-full flex flex-row items-center">
         {volume == 0 ? (
-          <Volume/>
+          <Volume />
         ) : volume > 0 && volume < 0.5 ? (
-          <Volume1/>
+          <Volume1 />
         ) : (
-          <Volume2/>
+          <Volume2 />
         )}
         <div className="px-5">
           <input
@@ -125,7 +149,6 @@ function Visualizer() {
           h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none cursor-pointer range-sm dark:bg-emerald-300"
           ></input>
         </div>
-
         <div className="absolute left-1/2 -translate-x-1/2">
           <button
             className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
