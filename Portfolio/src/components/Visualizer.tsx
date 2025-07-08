@@ -10,9 +10,9 @@ function Visualizer() {
   const [volume, setVolume] = useState(0.1);
   const [audioFiles, setAudioFiles] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(1);
-  const [currentLength, setCurrentLength] = useState(0.0)
-  const [position, setPosition] = useState(0.0)
-  
+  const [currentLength, setCurrentLength] = useState(0.0);
+  const [position, setPosition] = useState(0.0);
+
   const audioElem = useRef<HTMLAudioElement | null>(null);
 
   const playPause = () => {
@@ -30,9 +30,14 @@ function Visualizer() {
   };
 
   const onPlaying = () => {
-    const duration = audioElem.current?.duration;
-    const currTime = audioElem.current?.currentTime;
-    console.log(duration, currTime);
+    const duration = audioElem.current?.duration ?? 0;
+    const currTime = audioElem.current?.currentTime ?? 0;
+    setPosition(() => {
+      if (Number.isNaN(duration)) {
+        return 0;
+      }
+      return currTime / duration;
+    });
   };
 
   //Play Pause
@@ -70,9 +75,16 @@ function Visualizer() {
       if (isPlaying) {
         audioElem.current.play();
       }
-      
+      setCurrentLength(() => {
+        const duration = audioElem.current?.duration ?? 0;
+        return duration;
+      });
     }
   }, [currentAudio]);
+
+  useEffect(() => {
+    console.log(position);
+  }, [position]);
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -81,12 +93,14 @@ function Visualizer() {
           type="range"
           min="0"
           max="1"
-          step="0.01"
-          value={volume}
-          onChange={null}
+          step="0.001"
+          value={position}
+          onChange={(e) => {
+            setPosition(Number(e.target.value));
+          }}
           className="horizontal-slider w-full 
           volume-slider
-          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none cursor-pointer range-sm dark:bg-emerald-300"
+          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none hover:h-2  transition-all delay-50 duration-100 cursor-pointer range-sm dark:bg-emerald-300"
         ></input>
       </div>
       <div className="w-full flex flex-row items-center">
