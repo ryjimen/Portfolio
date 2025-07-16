@@ -4,47 +4,22 @@ import {
   Play,
   SkipBack,
   SkipForward,
-  Volume,
+  VolumeX,
   Volume1,
   Volume2,
 } from "lucide-react";
+import MusicList from "./MusicList";
 
 function Visualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.1);
   const [audioFiles, setAudioFiles] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(1);
-  const [currentLength, setCurrentLength] = useState(0.0);
   const [isSeeking, setIsSeeking] = useState(false);
   const [seekPosition, setSeekPosition] = useState(0.0);
   const [position, setPosition] = useState(0.0);
 
   const audioElem = useRef<HTMLAudioElement | null>(null);
-
-  const playPause = () => {
-    setIsPlaying((prev) => !prev);
-  };
-
-  const getCurrentSong = () => {
-    if (!audioFiles) return "";
-    const song = audioFiles.find((_, index) => index === currentAudio);
-    if (song) {
-      return `/audio/${song["name"]}`;
-    } else {
-      return null;
-    }
-  };
-
-  const onPlaying = () => {
-    const duration = audioElem.current?.duration ?? 0;
-    const currTime = audioElem.current?.currentTime ?? 0;
-    setPosition(() => {
-      if (Number.isNaN(duration)) {
-        return 0;
-      }
-      return currTime / duration;
-    });
-  };
 
   //Play Pause
   useEffect(() => {
@@ -81,13 +56,11 @@ function Visualizer() {
       if (isPlaying) {
         audioElem.current.play();
       }
-      setCurrentLength(() => {
-        const duration = audioElem.current?.duration ?? 0;
-        return duration;
-      });
     }
   }, [currentAudio]);
 
+  //Handles Seek Position Updates
+  //Prevents constant updates
   useEffect(() => {
     if (!isSeeking) {
       setPosition(seekPosition);
@@ -101,6 +74,56 @@ function Visualizer() {
       }
     }
   }, [isSeeking]);
+
+  //Auto Next Track
+  useEffect(() => {
+    if (Number(position) >= 1) {
+      nextSong();
+    }
+  }, [position]);
+
+  const playPause = () => {
+    setIsPlaying((prev) => !prev);
+  };
+
+  const getCurrentSong = () => {
+    if (!audioFiles) return "";
+    const song = audioFiles.find((_, index) => index === currentAudio);
+    if (song) {
+      return `/audio/${song["name"]}`;
+    } else {
+      return null;
+    }
+  };
+
+  const onPlaying = () => {
+    const duration = audioElem.current?.duration ?? 0;
+    const currTime = audioElem.current?.currentTime ?? 0;
+    setPosition(() => {
+      if (Number.isNaN(duration)) {
+        return 0;
+      }
+      return currTime / duration;
+    });
+  };
+
+  const nextSong = () => {
+    setCurrentAudio((prev) => {
+      return prev !== audioFiles.length - 1 ? prev + 1 : 0;
+    });
+    setIsPlaying(true);
+  };
+
+  const prevSong = () => {
+    setCurrentAudio((prev) => {
+      return prev !== 0 ? prev - 1 : audioFiles.length - 1;
+    });
+    setIsPlaying(true);
+  };
+
+  const selectSongByIndex = (index: number) => {
+    setCurrentAudio(index);
+  };
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -130,8 +153,8 @@ function Visualizer() {
       </div>
       <div className="w-full flex flex-row items-center">
         {volume == 0 ? (
-          <Volume />
-        ) : volume > 0 && volume < 0.5 ? (
+          <VolumeX />
+        ) : volume > 0 && volume < 0.33 ? (
           <Volume1 />
         ) : (
           <Volume2 />
@@ -152,12 +175,7 @@ function Visualizer() {
         <div className="absolute left-1/2 -translate-x-1/2">
           <button
             className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-            onClick={() => {
-              if (currentAudio !== 0) {
-                setCurrentAudio(currentAudio - 1);
-                setIsPlaying(true);
-              }
-            }}
+            onClick={prevSong}
           >
             <SkipBack />
           </button>
@@ -169,17 +187,17 @@ function Visualizer() {
           </button>
           <button
             className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-            onClick={() => {
-              if (currentAudio !== audioFiles.length - 1) {
-                setCurrentAudio(currentAudio + 1);
-                setIsPlaying(true);
-              }
-            }}
+            onClick={nextSong}
           >
             <SkipForward />
           </button>
         </div>
       </div>
+      <MusicList
+        Selected={currentAudio}
+        audioFiles={audioFiles}
+        selectCallback={selectSongByIndex}
+      />
     </div>
   );
 }
