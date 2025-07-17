@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import MusicList from "./MusicList";
 
+
 function Visualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.1);
@@ -128,7 +129,7 @@ function Visualizer() {
   return (
     <div className="w-full flex flex-col items-center ">
       <audio src={getCurrentSong()} ref={audioElem} onTimeUpdate={onPlaying} />
-      <div className="w-full flex flex-col items-center glass-card p-3">
+      <div className="w-full flex flex-col items-center glass-card px-7 py-3">
         <div className="w-full">
           <input
             type="range"

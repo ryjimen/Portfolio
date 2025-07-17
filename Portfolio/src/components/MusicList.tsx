@@ -14,21 +14,21 @@ function MusicList(props: Props) {
   };
 
   return (
-    <div className="flex flex-col glass-card m-5 p-3">
+    <div className="flex flex-col glass-card m-5 px-7 py-5 w-full ubuntu">
       {props.audioFiles.map((file, index) => {
         if (props.Selected === index)
           return (
             <button
-              className="text-blue-500"
+              className="text-xl bg-emerald-300 text-black border-b-2 white rounded-md"
               onClick={() => selectSongByIndex(index)}
             >
-              {file["name"]}
+              {file["name"].replace(".mp3", "")}
             </button>
           );
         else {
           return (
-            <button className="" onClick={() => selectSongByIndex(index)}>
-              {file["name"]}
+            <button className="text-l" onClick={() => selectSongByIndex(index)}>
+              {file["name"].replace(".mp3", "")}
             </button>
           );
         }
