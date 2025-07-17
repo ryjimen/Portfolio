@@ -14,7 +14,7 @@ function MusicList(props: Props) {
   };
 
   return (
-    <>
+    <div className="flex flex-col glass-card m-5 p-3">
       {props.audioFiles.map((file, index) => {
         if (props.Selected === index)
           return (
@@ -26,10 +26,14 @@ function MusicList(props: Props) {
             </button>
           );
         else {
-          return <button className="" onClick={() => selectSongByIndex(index)}>{file["name"]}</button>;
+          return (
+            <button className="" onClick={() => selectSongByIndex(index)}>
+              {file["name"]}
+            </button>
+          );
         }
       })}
-    </>
+    </div>
   );
 }
 

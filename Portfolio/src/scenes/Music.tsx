@@ -6,7 +6,7 @@ import Visualizer from "../components/Visualizer";
 function Music() {
   return (
     <div className="flex flex-col striped-background">
-      <div className="image-gradient layer-blur"></div>
+      <div className="image-gradient-picture layer-blur"></div>
       <Navbar />
       <main className="w-full h-full px-4 sm:px-15 md:px-20 max-w-screen-xl mx-auto">
         <div className="h-screen flex justify-center items-center">

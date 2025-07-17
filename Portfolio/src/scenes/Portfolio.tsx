@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 function Portfolio() {
   return (
     <div className="flex flex-col striped-background">
-      <div className="image-gradient layer-blur"></div>
+      <div className="image-gradient layer-blur-sm"></div>
       <Navbar />
       <main className="w-full h-full  md:px-20 max-w-screen-xl mx-auto">
         <div>

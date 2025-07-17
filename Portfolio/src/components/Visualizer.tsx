@@ -126,73 +126,76 @@ function Visualizer() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center ">
       <audio src={getCurrentSong()} ref={audioElem} onTimeUpdate={onPlaying} />
-      <div className="w-full">
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.001"
-          value={position}
-          onChange={(e) => {
-            setSeekPosition(Number(e.target.value));
-            setPosition(Number(e.target.value));
-            setIsSeeking(true);
-          }}
-          onMouseUp={() => {
-            setIsSeeking(false);
-          }}
-          onTouchEnd={() => {
-            setIsSeeking(false);
-          }}
-          className="horizontal-slider w-full 
-          volume-slider
-          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none hover:h-2 transition-all duration-100 cursor-pointer range-sm dark:bg-emerald-300"
-        ></input>
-      </div>
-      <div className="w-full flex flex-row items-center">
-        {volume == 0 ? (
-          <VolumeX />
-        ) : volume > 0 && volume < 0.33 ? (
-          <Volume1 />
-        ) : (
-          <Volume2 />
-        )}
-        <div className="px-5">
+      <div className="w-full flex flex-col items-center glass-card p-3">
+        <div className="w-full">
           <input
             type="range"
             min="0"
             max="1"
-            step="0.01"
-            value={volume}
-            onChange={(e) => setVolume(Number(e.target.value))}
-            className="horizontal-slider w-20 
+            step="0.001"
+            value={position}
+            onChange={(e) => {
+              setSeekPosition(Number(e.target.value));
+              setPosition(Number(e.target.value));
+              setIsSeeking(true);
+            }}
+            onMouseUp={() => {
+              setIsSeeking(false);
+            }}
+            onTouchEnd={() => {
+              setIsSeeking(false);
+            }}
+            className="horizontal-slider w-full 
           volume-slider
-          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none cursor-pointer range-sm dark:bg-emerald-300"
+          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none hover:h-2 transition-all duration-100 cursor-pointer range-sm dark:bg-emerald-300"
           ></input>
         </div>
-        <div className="absolute left-1/2 -translate-x-1/2">
-          <button
-            className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-            onClick={prevSong}
-          >
-            <SkipBack />
-          </button>
-          <button
-            className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-            onClick={playPause}
-          >
-            {isPlaying ? <Pause /> : <Play />}
-          </button>
-          <button
-            className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
-            onClick={nextSong}
-          >
-            <SkipForward />
-          </button>
+        <div className="w-full flex flex-row items-center">
+          {volume == 0 ? (
+            <VolumeX />
+          ) : volume > 0 && volume < 0.33 ? (
+            <Volume1 />
+          ) : (
+            <Volume2 />
+          )}
+          <div className="px-5">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={(e) => setVolume(Number(e.target.value))}
+              className="horizontal-slider w-20 
+          volume-slider
+          h-0.5 mb-4 bg-stone-900 rounded-lg appearance-none cursor-pointer range-sm dark:bg-emerald-300"
+            ></input>
+          </div>
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <button
+              className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
+              onClick={prevSong}
+            >
+              <SkipBack />
+            </button>
+            <button
+              className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
+              onClick={playPause}
+            >
+              {isPlaying ? <Pause /> : <Play />}
+            </button>
+            <button
+              className="btn btn-ghost btn-square hover:bg-emerald-300 hover:text-stone-900"
+              onClick={nextSong}
+            >
+              <SkipForward />
+            </button>
+          </div>
         </div>
       </div>
+
       <MusicList
         Selected={currentAudio}
         audioFiles={audioFiles}
