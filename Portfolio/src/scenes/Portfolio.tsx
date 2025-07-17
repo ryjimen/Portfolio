@@ -7,6 +7,7 @@ function Portfolio() {
   return (
     <div className="flex flex-col striped-background">
       <div className="image-gradient layer-blur-sm"></div>
+      <div className="image-gradient layer-blur-sm-offset"></div>
       <Navbar />
       <main className="w-full h-full  md:px-20 max-w-screen-xl mx-auto">
         <div>

@@ -61,8 +61,10 @@ body,
 
 .image-gradient-picture {
   background-image: url('/logo.png');
-  background-size: cover;
   background-repeat: no-repeat;
+  background-size: contain; /* Or try "60%" or "cover" if you want more fill */
+  background-position: center; /* Centers the image */
+
   position: absolute;
   top: 0;
   right: 0;
@@ -73,11 +75,11 @@ body,
 }
 
 .layer-blur {
-  height: 60rem;
-  width: 100rem;
+  height: 50%;
+  width: 250%;
   position: fixed;
-  top: 5%;
-  right: -30%;
+  top: 15%;
+  right: -75%;
   box-shadow: 0 0 700px 15px rgb(55, 212, 128);
   rotate: -30deg;
   z-index: -1;
@@ -91,6 +93,17 @@ body,
   right: -30%;
   box-shadow: 0 0 100px 1px rgb(55, 212, 128);
   rotate: -30deg;
+  z-index: -1;
+}
+
+.layer-blur-sm-offset {
+  height: 60rem;
+  width: 90rem;
+  position: fixed;
+  top: 0%;
+  right: 30%;
+  box-shadow: 0 0 100px 1px rgb(55, 212, 128);
+  rotate: -10deg;
   z-index: -1;
 }
 
